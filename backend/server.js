@@ -9,6 +9,13 @@ const port = process.env.PORT || 8080;
 // Middleware
 app.use(cors());
 app.use(express.json()); // Parses JSON bodies
+// Redirect all non-prefixed routes to `/api`
+app.use((req, res, next) => {
+  if (!req.path.startsWith("/api")) {
+    req.url = `/api${req.url}`; // Prepend '/api' to the request URL
+  }
+  next();
+});
 
 // MongoDB connection
 mongoose
